@@ -1,8 +1,12 @@
 package com.ubivelox;
 
+import java.util.Random;
+
 import android.content.Context;
+import android.renderscript.Float4;
 import android.renderscript.RSSurfaceView;
 import android.renderscript.RenderScriptGL;
+import android.view.MotionEvent;
 
 public class RenderScript101View extends RSSurfaceView {
     private Context context;
@@ -26,5 +30,22 @@ public class RenderScript101View extends RSSurfaceView {
                     new RenderScript101RS(rs, context.getResources(),
                             R.raw.renderscript101);
         }
+    }
+    
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        super.onTouchEvent(event);
+        
+        if (script == null) {
+            return true;
+        }
+        
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            final Random random = new Random();
+            final Float4 newColor = new Float4(random.nextFloat(), random.nextFloat(), random.nextFloat(), 1.0f);
+            script.setBackgroundColor(newColor);
+        }
+        
+        return true;
     }
 }
